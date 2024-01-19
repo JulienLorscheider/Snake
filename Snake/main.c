@@ -31,7 +31,11 @@ Direction direction = DROITE;
 
 Fruit fruit;
 
+char fruitsIcones[] = {'@', '%', '*'};
+char fruitActuel = '@';
+
 void placerFruit() {
+    fruitActuel = fruitsIcones[rand() % (sizeof(fruitsIcones) / sizeof(char))];
     bool estSurSerpent;
     do {
         estSurSerpent = false;
@@ -83,7 +87,7 @@ int main() {
         traiterEntree();
         mettreAJourJeu();
 
-        // Temporisation (à améliorer plus tard pour un meilleur contrôle du temps)
+        // Temporisation
         sleep(1);
     }
 
@@ -107,18 +111,15 @@ void afficherJeu() {
                 // Afficher les murs sur les bords
                 printf("#");
             } else if (serpent[0].x == x && serpent[0].y == y) {
-                // Tête du serpent
-                printf("S");
+                printf("S"); // Tête du serpent
             } else if (fruit.x == x && fruit.y == y) {
-                // Fruit
-                printf("F");
+                printf("%c", fruitActuel); // Fruit actuel
             } else {
-                // Espace vide
                 bool estSerpent = false;
                 for (int i = 1; i < tailleSerpent; i++) {
                     if (serpent[i].x == x && serpent[i].y == y) {
                         estSerpent = true;
-                        printf("s");
+                        printf("s"); // Corps du serpent
                         break;
                     }
                 }
