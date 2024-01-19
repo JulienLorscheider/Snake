@@ -20,6 +20,8 @@ typedef struct {
     int x, y;
 } Segment;
 
+bool enPause = false;
+
 typedef struct {
     int x, y;
 } Fruit;
@@ -93,10 +95,13 @@ int main() {
     while (true) {
         afficherJeu();
         traiterEntree();
-        mettreAJourJeu();
+        
+        if (!enPause) {
+            mettreAJourJeu();
+        }
 
         // Temporisation
-        sleep(1);
+        sleep(0.9);
     }
 
     return 0;
@@ -143,23 +148,29 @@ void afficherJeu() {
 void traiterEntree() {
     char c;
     if (read(STDIN_FILENO, &c, 1) == 1) {
-        switch (c) {
-            case 'q':
-                desactiverModeRaw();
-                exit(0);
-                break;
-            case 'e':
-                if (direction != BAS) direction = HAUT;
-                break;
-            case 'd':
-                if (direction != HAUT) direction = BAS;
-                break;
-            case 's':
-                if (direction != DROITE) direction = GAUCHE;
-                break;
-            case 'f':
-                if (direction != GAUCHE) direction = DROITE;
-                break;
+        if (c == 'p') {
+            enPause = !enPause;
+        }
+        
+        if (!enPause) {
+            switch (c) {
+                case 'q':
+                    desactiverModeRaw();
+                    exit(0);
+                    break;
+                case 'e':
+                    if (direction != BAS) direction = HAUT;
+                    break;
+                case 'd':
+                    if (direction != HAUT) direction = BAS;
+                    break;
+                case 's':
+                    if (direction != DROITE) direction = GAUCHE;
+                    break;
+                case 'f':
+                    if (direction != GAUCHE) direction = DROITE;
+                    break;
+            }
         }
     }
 }
