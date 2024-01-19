@@ -189,12 +189,12 @@ void mettreAJourJeu() {
     // Vérifie si le serpent a mangé le fruit
     if (serpent[0].x == fruit.x && serpent[0].y == fruit.y) {
         tailleSerpent++;
-        placerFruit(); // Place un nouveau fruit
+        placerFruit();
     }
 
     // Vérification des collisions avec les murs
-    if (serpent[0].x < 0 || serpent[0].x >= LARGEUR ||
-        serpent[0].y < 0 || serpent[0].y >= HAUTEUR) {
+    if (serpent[0].x <= 0 || serpent[0].x >= LARGEUR - 1 ||
+        serpent[0].y <= 0 || serpent[0].y >= HAUTEUR - 1) {
         desactiverModeRaw();
         printf("Game Over: Collision avec le mur!\n");
         exit(0);
