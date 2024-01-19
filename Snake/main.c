@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <termios.h>
 
-#define LARGEUR 40
+#define LARGEUR 45
 #define HAUTEUR 20
 
 typedef enum { HAUT, BAS, GAUCHE, DROITE } Direction;
@@ -39,20 +39,28 @@ void placerFruit() {
     bool estSurSerpent;
     do {
         estSurSerpent = false;
-        fruit.x = rand() % LARGEUR;
-        fruit.y = rand() % HAUTEUR;
+        // S'assurer que le fruit est placé à l'intérieur des limites jouables
+        fruit.x = (rand() % (LARGEUR - 2)) + 1;
+        fruit.y = (rand() % (HAUTEUR - 2)) + 1;
 
         for (int i = 0; i < tailleSerpent; i++) {
             if (serpent[i].x == fruit.x && serpent[i].y == fruit.y) {
                 estSurSerpent = true;
-                break; // Sortir de la boucle si le fruit est sur le serpent
+                break;
             }
         }
-    } while (estSurSerpent); // Continue jusqu'à ce que le fruit ne soit pas sur le serpent
+    } while (estSurSerpent);
 }
 
 // Structure pour les paramètres du terminal
 struct termios orig_termios;
+
+void effacerEcran() {
+    // Imprime suffisamment de sauts de ligne pour "nettoyer" l'écran
+    for (int i = 0; i < 100; i++) {
+        printf("\n");
+    }
+}
 
 // Fonctions pour gérer le mode terminal
 void desactiverModeRaw() {
@@ -103,7 +111,7 @@ void initialiserJeu() {
 }
 
 void afficherJeu() {
-    system("clear"); // Efface l'écran
+    effacerEcran(); // Efface l'écran
 
     for (int y = 0; y < HAUTEUR; y++) {
         for (int x = 0; x < LARGEUR; x++) {
